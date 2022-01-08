@@ -1,4 +1,7 @@
 
+from types import resolve_bases
+
+
 def lambda_curry2(func):
     """
     Returns a Curried version of a two-argument function FUNC.
@@ -15,7 +18,7 @@ def lambda_curry2(func):
     3
     """
     "*** YOUR CODE HERE ***"
-    return ______
+    return lambda x: lambda y: func(x, y)
 
 
 
@@ -47,6 +50,18 @@ def count_cond(condition):
     8
     """
     "*** YOUR CODE HERE ***"
+    def f(n):
+        i = 1
+        cout = 0
+        while i <= n:
+            if condition(n, i):
+                cout += 1
+            i += 1
+        return cout
+    return f
+
+
+        
 
 
 
@@ -82,6 +97,7 @@ def composite_identity(f, g):
     False
     """
     "*** YOUR CODE HERE ***"
+    return lambda x: f(g(x)) == g(f(x))
 
 
 
@@ -113,3 +129,37 @@ def cycle(f1, f2, f3):
     """
     "*** YOUR CODE HERE ***"
 
+    """ Error infinite recursion
+    """
+    # def make_module(n):
+    #     if n == 0:
+    #         return lambda x: x
+    #     if n == 1:
+    #         return lambda x: x + 1
+    #     i = 2
+    #     module = lambda x: x + 1
+    #     while i <= n:
+    #         if i % 3 == 1:
+    #             module = lambda x: f1(module(x))
+    #         elif i % 3 == 2:
+    #             module = lambda x: f2(module(x))
+    #         else:
+    #             module = lambda x: f3(module(x))
+    #         i += 1
+    #     return module
+    # return make_module
+
+    def make_module(n):
+        def module(x):
+            i = 1
+            while i <= n:
+                if i % 3 == 1:
+                    x = f1(x)
+                elif i % 3 == 2:
+                    x = f2(x)
+                else:
+                    x = f3(x)
+                i += 1
+            return x
+        return module
+    return make_module
