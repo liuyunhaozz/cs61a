@@ -1,5 +1,7 @@
 # Example: Sound
 
+# To show the advantage of Higher Ordered Functions to combine your ideas 
+
 from wave import open
 from struct import Struct
 from math import floor
@@ -114,6 +116,8 @@ def mario_at(octave):
     return mario(c, e, g, low_g)
 
 play(both(mario_at(1), mario_at(1/2)))
+
+play(mario_at(1))
 
 
 

@@ -23,6 +23,16 @@ def num_eights(x):
     True
     """
     "*** YOUR CODE HERE ***"
+    if x < 10:
+        if x == 8:
+            return 1
+        else:
+            return 0
+    else:
+        if x % 10 == 8:
+            return num_eights(x // 10) + 1
+        else:
+            return num_eights(x // 10)
 
 
 def pingpong(n):
@@ -58,6 +68,14 @@ def pingpong(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(index, ppn, dir):
+        if index == n:
+            return ppn
+        if not index % 8 or num_eights(index):
+            return helper(index + 1, ppn + (-dir), -dir)
+        return helper(index + 1, ppn + dir, dir)
+    return helper(1, 1, 1)
+    
 
 
 def missing_digits(n):
@@ -88,6 +106,15 @@ def missing_digits(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(num, index, count):
+        if num < 10:
+            return max((index - num - 1), 0) + count
+        else:
+            last, all_but_last = num % 10, num // 10
+            return helper(all_but_last, last, count + max((index - last - 1), 0))
+    return helper(n, n % 10, 0)
+
+
 
 
 def next_largest_coin(coin):
@@ -124,6 +151,19 @@ def count_coins(total):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(total, coin):
+        if total == 0:
+            return 1
+        elif total < 0:
+            return 0
+        elif coin == None:
+            return 0
+        else:
+            with_m = helper(total - coin, coin)
+            without_m = helper(total, next_largest_coin(coin))
+            return with_m + without_m
+    return helper(total, 1)
+
 
 
 from operator import sub, mul
@@ -138,5 +178,8 @@ def make_anonymous_factorial():
     >>> check(HW_SOURCE_FILE, 'make_anonymous_factorial', ['Assign', 'AugAssign', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
+    # return lambda n: 1 if n == 1 else mul(n, )
+    
+    # treat the the second func as the argument of the first func, return the factorial_func(n)
+    return (lambda func: lambda n: func(func, n))(lambda f, k: k if k == 1 else mul(k, f(f, sub(k, 1))))
 
